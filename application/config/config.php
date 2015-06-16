@@ -17,7 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/controlBodega';
+$config['base_url'] = 'http://localhost/controlBodega/controlBodega/';
+/* se dispone momentaniamente a trabajar con una base de datos local */
 
 /*
 |--------------------------------------------------------------------------
@@ -305,7 +306,7 @@ $config['cache_query_string'] = FALSE;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'a@s$%&#$'; /* Clave de encriptación para las Cokies */
 
 /*
 |--------------------------------------------------------------------------
@@ -356,7 +357,7 @@ $config['encryption_key'] = '';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session';
+$config['sess_cookie_name'] = 'Session_bodega';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;

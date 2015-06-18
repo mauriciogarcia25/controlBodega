@@ -23,12 +23,12 @@
         		<h3 class="text-muted">CONTROL BODEGA</h3>
         		<nav>
           			<ul class="nav nav-justified">
-            			<li class="active"><a href="#">INICIO</a></li>
-            			<li><a href="#">INGRESAR PRODUCTO</a></li>
-            			<li><a href="#">RETIRAR PRODUCTO</a></li>
-            			<li><a href="#">INFORME SEMANAL</a></li>
-            			<li><a href="#">INFORME MENSUAL</a></li>
-            			<li><a href="#">REGISTRAR USUARIO</a></li>
+            			<li class="active"><a href="#">Inicio</a></li>
+            			<li><a href="#">Ingresar Producto</a></li>
+            			<li><a href="#">Retirar Producto</a></li>
+            			<li><a href="#">Informe Semanal</a></li>
+            			<li><a href="#">InForme Mensual</a></li>
+            			<li><a href="#">Registrar Usuario</a></li>
           			</ul>
         		</nav>
         	</div>

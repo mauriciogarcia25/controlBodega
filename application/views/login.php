@@ -1,3 +1,9 @@
+<!--
+pagina login cargada dentrodel cuerpo
+solo en caso de no existir un usuario activo
+-->   
+   <div class="row">
+    <div class="col-md-4">
       <form id="forma" class="form-signin">
         <h2 class="form-signin-heading">Ingreso a Bodega</h2>
           <label for="inputEmail" class="sr-only">Ingrese su usuario</label>
@@ -11,3 +17,7 @@
             </div>
             <button class="btn btn-lg btn-success btn-block" id="btnLogin" type="submit">Ingresar</button>
       </form>
+    </div>
+    <div class="col-md-8">
+    </div>
+  </div>

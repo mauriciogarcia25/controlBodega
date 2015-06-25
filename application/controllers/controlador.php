@@ -1,30 +1,34 @@
 <?php if (!defined('BASEPATH')) {exit('No direct script access allowed');
 }
 class Controlador extends CI_Controller {
-/*
-en esta función se llama a la clase modelo, para
-realizar la conexión  
-*/
+/*---------------------------------------------------------
+En esta función se llama a la clase modelo, para
+realizar la conexión con la base de datos 
+----------------------------------------------------------*/
 	public function __construct() {
 		parent::__construct();
 		$this->load->model("modelo");
 	}
-
-/*
+/*----------------------------------------------------------
 esta parte es el controladdor, donde están las funciones 
 necesarias para llamar desde la base de datos a las vista,
 como también, de la vista a la base de datos.
-*/
-
+----------------------------------------------------------*/
 	public function index() {
 		$this->load->view("header");
 		$this->load->view("footer");
 	}
-
-
 	function login() {
+/*---------------------------------------------------------
+función que es llamada por la vista para verificar 
+la valides del usuario que desea ingresar, para ello
+los datos enviados por post se reenvian al modelo,
+el que compara los datos y devuelve valores de las
+tablas de la base de datos para establecer la sesión del
+usuario y determinarle un estado "loggeado"
+---------------------------------------------------------*/
 		$usuario = $this->input->post("usuario");
-		$clave   = md5($this->input->post("clave"));
+		$clave   = $this->input->post("clave");
 
 		if ($this->modelo->conecta($usuario, $clave) == true) {
 			$nombre = $this->modelo->rescataNombre($usuario, $clave);
@@ -43,6 +47,13 @@ como también, de la vista a la base de datos.
 		$this->session->set_userdata($datos);
 	}
 	function validaLogin() {
+/*--------------------------------------------------------
+esta función se encarga de validar si existe un usuario
+ya activo en el caso de estarlo determina que tipo de 
+usuario es, de lo contrario en caso de no estar loggeado
+devuelve a la vista login dando así la posibilidad de 
+ingresar
+--------------------------------------------------------*/
 		if ($this->session->userdata("loggeado")) {
 			$datos['nombre'] = $this->session->userdata("nombre");
 			$this->load->view("bienvenido", $datos);
@@ -51,9 +62,24 @@ como también, de la vista a la base de datos.
 		}
 	}
 	function matarCookie() {
+/*--------------------------------------------------------
+simple funcion que elimina el usuario que se encuentra 
+activo, volviendo la aplicación a su vista login
+--------------------------------------------------------*/
 		$this->session->sess_destroy();
 	}
+	function validaSession2() {
+		if ($this->session->userdata("loggeado")) {
+			echo json_encode(array("mensaje" => "valido"));
+		} else {
+			echo json_encode(array("mensaje" => "no valido"));
+		}
+	}
+}
+/*-------------------------------------------------------------------
+---------------------------------------------------------------------
 	function cargaRegistro() {
+
 		if ($this->session->userdata("loggeado")) {
 			$datos['valor'] = 0;
 			$this->load->view("registro", $datos);
@@ -83,13 +109,7 @@ como también, de la vista a la base de datos.
 		echo json_encode(array("mensaje" => $mensaje));
 		//$this->load->view("informe", $datos);
 	}
-	function validaSession2() {
-		if ($this->session->userdata("loggeado")) {
-			echo json_encode(array("mensaje" => "valido"));
-		} else {
-			echo json_encode(array("mensaje" => "no valido"));
-		}
-	}
+	
 	function cargarRegistros() {
 		//echo "hola";
 		$respuesta = $this->modelo->cargarRegistros();
@@ -115,7 +135,8 @@ como también, de la vista a la base de datos.
 		$this->load->view('informe2', $datos);
 	}
 }
-
+------------------------------------------------------------------
+-----------------------------------------------------------------*/
 /**$respuesta = $this->modelo->cargarRegistros();
 $datos['cantidad'] = $respuesta->num_rows();
 if ($respuesta->num_rows() == 0) {

@@ -1,6 +1,13 @@
+/*-----------------------------------------------------
+cuando la pagina esté completamente cargada
+continuará con lo que está dentro del document ready
+-----------------------------------------------------*/
 $(document).ready(
+/*-----------------------------------------------------
+se llama al validador de usuarios y sus mensajes para 
+así restringir la pagina.
+-----------------------------------------------------*/
     function(){
-        //se llama al validador de usuarios para restringir la página admeas de sus mensajes
         validaLogin();
             $("#mensajeModal").dialog({
                 modal:true,
@@ -13,11 +20,17 @@ $(document).ready(
         });
     }
 );
-//se llama una función del controlador para estimar si existe un usuario loggeado
-//esto para restringir el acceso a la pagina en el caso de que no exista un usuario activo.
+/*--------------------------------------------------------------------
+Se llama una función del controlador 
+para estimar si existe un usuario loggeado,
+esto para restringir el acceso a la pagina 
+en el caso de que no exista un usuario activo.
+--------------------------------------------------------------------*/
 function validaLogin(){
+/*--------------------------------------------------------------------
+mediante base_url se lláma por post a los metodos del controlador
+--------------------------------------------------------------------*/
     $.post(
-        //mediante base_url se lláma por post a los metodos del controlador
         base_url+"controlador/validaLogin",{},
             function(pagina,datos){
                 $("#userConect").html(pagina,datos);
@@ -35,6 +48,12 @@ function validaLogin(){
     );
 }
 function login(){
+/*--------------------------------------------------------
+Por post se envian los datos ingresados por el usuario
+al controlador, este a su vez llama un metodo alojado en
+el modelo para validar los datos ingresados con los de
+la base de datos
+----------------------------------------------------------*/
     $.post(
         base_url+"controlador/login",
         {
@@ -47,6 +66,10 @@ function login(){
     );
 }
 function salir(){
+/*----------------------------------------------------------
+Esta función llama a un metodo del controlador para eliminar
+la sesión activa y eliminarla de las cookies
+----------------------------------------------------------*/
     $.post(
         base_url+"controlador/matarCookie",
         {},
@@ -55,7 +78,10 @@ function salir(){
         }
     );
 }
+/*----------------------------------------------------------
+------------------------------------------------------------
 function cargaRegistro(){
+
     $.post(
         base_url+"controlador/cargaRegistro",{},
         function(pagina,datos){
@@ -106,3 +132,5 @@ function verInforme(){
         },'json');
     
 }
+-----------------------------------------------------------------------
+---------------------------------------------------------------------*/

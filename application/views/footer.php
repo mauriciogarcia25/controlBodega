@@ -1,8 +1,7 @@
-				<!-- Pie de Página -->
-        		<footer class="footer">
+        		<footer class="footer"><!-- Pie de página -->
                     <p>&copy; Company 2014</p>
-        		</footer>
-        	</div>
+        		</footer><!-- fin pie de página -->
+        	</div><!-- fin del cauerpo de la pagina -->
         </div><!--Container full web -->    
     </body>
 </html>

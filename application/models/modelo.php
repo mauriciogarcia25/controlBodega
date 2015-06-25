@@ -1,20 +1,27 @@
 <?php
 class Modelo extends CI_Model {
-
 	function conecta($usuario, $clave) {
+/*-----------------------------------------------
+Función conecta, esta función consulta a la 
+base de datos por un usuario especifico en 
+base a su usuario y su clave 
+-----------------------------------------------*/
 		$this->db->select('*');
 		$this->db->where('usuario', $usuario);
 		$this->db->where('clave', $clave);
 		$respuesta = $this->db->get('usuario');
-		if ($respuesta->num_rows() == 0) {
-			return false;
-		} else {
-			return true;
+			if ($respuesta->num_rows() == 0){
+				return false;
+			} else {
+				return true;
 		}
-
 	}
-
 	function rescataNombre($usuario, $clave) {
+/*------------------------------------------------
+función que con el usuario y la clave rescata
+información de la tabla usuario en espesifico 
+del usuario consultado
+-------------------------------------------------*/
 		$this->db->select('nombre , apellido');
 		$this->db->where('usuario', $usuario);
 		$this->db->where('clave', $clave);

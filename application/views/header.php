@@ -2,6 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8">
+<!--_________________________________________________
+se Cargan las hojas de estilo y los javascripts
+para dar la apariencia y funcionalidad a la pagina
+ademas se da inicio al base url para hacer referecia
+a una cadena que devuelve la ruta espesifica 
+de la pagina
+______________________________________________________-->        
             <link type="text/css" rel="stylesheet" href="<?php echo base_url()?>estilos/bootstrap.css">
             <link type="text/css" rel="stylesheet" href="<?php echo base_url()?>estilos/bootstrap.min.css">
             <link type="text/css" rel="stylesheet" href="<?php echo base_url()?>estilos/signin.css">
@@ -14,6 +21,7 @@
                 var base_url ='<?php echo base_url()?>index.php/';
             </script>
     </head>
+
     <body>
         <div id="web" class="container"><!--Container full web -->
             <div id="header"><!--star header-->
@@ -39,7 +47,7 @@
                 </nav><!--end bar-static-->
             </div><!--end header-->
         <div id="mensajeModal" title="Mensaje"><!-- star mensaje-->
-        </div>
+        </div><!-- end mensaje-->
         <div id="userConect"><!-- star user conect-->
-        </div>
-        <div id="central"><!-- end conect-->
+        </div><!-- end conect -->
+        <div id="central"><!-- inicio del cauerpo de la pagina -->

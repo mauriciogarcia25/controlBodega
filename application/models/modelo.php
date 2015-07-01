@@ -1,74 +1,66 @@
 <?php
+
 class Modelo extends CI_Model {
-	function conecta($usuario, $clave) {
-/*-----------------------------------------------
-Función conecta, esta función consulta a la 
-base de datos por un usuario especifico en 
-base a su usuario y su clave 
------------------------------------------------*/
-		$this->db->select('*');
-		$this->db->where('usuario', $usuario);
-		$this->db->where('clave', $clave);
-		$respuesta = $this->db->get('usuario');
-			if ($respuesta->num_rows() == 0){
-				return false;
-			} else {
-				return true;
-		}
-	}
-	function rescataNombre($usuario, $clave) {
-/*------------------------------------------------
-función que con el usuario y la clave rescata
-información de la tabla usuario en espesifico 
-del usuario consultado
--------------------------------------------------*/
-		$this->db->select('nombre , apellido');
-		$this->db->where('usuario', $usuario);
-		$this->db->where('clave', $clave);
-		$respuesta = $this->db->get('usuario');
-		foreach ($respuesta->result() as $fila) {
-			$nombre   = $fila->nombre;
-			$apellido = $fila->apellido;
-		}
-		return $nombre." ".$apellido;
-	}
 
-	function guardarRegistro($nombre, $apellido, $direccion, $telefono, $edad, $usuario, $clave) {
-		$datos = array(
-			"nombre"    => $nombre,
-			"apellido"  => $apellido,
-			"direccion" => $direccion,
-			"telefono"  => $telefono,
-			"edad"      => $edad,
-			"usuario"   => $usuario,
-			"clave"     => $clave,
-		);
-		$this->db->insert('usuario', $datos);
-	}
-	function cargarRegistros() {
-		//echo "modelo";
-		$this->db->select('*');
-		return $this->db->get('usuario');
-	}
-}
+    function usuario($usuario, $clave) {
+        $this->db->select('*');
+        $this->db->where('id_usuario', $usuario);
+        $this->db->where('clave', $clave);
+        $respuesta = $this->db->get('usuarios');
 
-/**class Modelo extends CI_Model {
-//Consulta si el usuario esta en la BD
-funtion conecta($usuario,$clave){
-//$Consulta = select * from usuario where usuario = $usuario and clave = $clave;
-$this->db->select('*');
-$this->db->where('usuario',$usuario);
-$this->db->where('clave',$clave);
-$respuesta = $this->db->get('usuario');
-//$respuesta->num_rows();//numero de filas
-//$respuesta->result();//Extraer los datos
+        if ($respuesta->num_rows() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-if ($respuesta->num_rows()== 0) {
-return false;
-} else {
-return true;
-}
+    function cargaProductos() {
+        $this->db->select("*");
+        return $this->db->get("productos");
+    }
+
+    function eliminarProducto($codigo) {
+        $this->db->where("codigo", $codigo);
+        $this->db->delete("productos");
+    }
+
+    function cargaProductoCodigo($codigo) {
+        $this->db->select("*");
+        $this->db->where("codigo", $codigo);
+        return $this->db->get("productos");
+    }
+
+    function insertarProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock) {
+        $this->db->select("codigo");
+        $this->db->where("codigo", $codigo);
+        $cant = $this->db->get("productos")->num_rows();
+
+        if ($cant == 0) {
+            $datos = array(
+                "codigo" => $codigo,
+                "nombre" => $nombre,
+                "descripcion" => $descripcion,
+                "marca" => $marca,
+                "modelo" => $modelo,
+                "precio" => $precio,
+                "stock" => $stock
+            );
+            $this->db->insert("productos", $datos);
+        } else {
+            $datos = array(
+                "nombre" => $nombre,
+                "descripcion" => $descripcion,
+                "marca" => $marca,
+                "modelo" => $modelo,
+                "precio" => $precio,
+                "stock" => $stock
+            );
+            $this->db->where("codigo", $codigo);
+            $this->db->update("productos", $datos);
+        }
+    }
 
 }
-}**/
+
 ?>

@@ -1,0 +1,12 @@
+body{
+    font-size: 14px;
+    background: rgba(120,120,120,0.3);
+}
+.msjOk{
+    color: black;
+    font-weight: bold;
+}
+.msjError{
+    color: red;
+    font-weight: bold;
+}

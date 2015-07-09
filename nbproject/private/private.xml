@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/wamp/www/pruebas/js/funciones.js</file>
-            <file>file:/C:/wamp/www/pruebas/application/controllers/controlador.php</file>
-            <file>file:/C:/wamp/www/pruebas/application/views/tablaProductos.php</file>
-            <file>file:/C:/wamp/www/pruebas/application/views/retirarProducto.php</file>
-            <file>file:/C:/wamp/www/pruebas/application/views/inicio.php</file>
-            <file>file:/C:/wamp/www/pruebas/application/models/modelo.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

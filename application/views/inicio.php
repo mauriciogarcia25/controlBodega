@@ -4,11 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Bodega AutoVip</title>
+        <title>Welcome to CodeIgniter</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>jquery/jquery-ui.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/navbar-fixed-top.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/hojaEstilos.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/estilos.css">
         <script type="text/javascript" src="<?php echo base_url() ?>jquery/jquery.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>jquery/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>js/funciones.js"></script>
@@ -27,30 +26,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo base_url() ?>">inicio</a></li>
                     </ul>
-                    <ul id="infoUser"></ul>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
         <div class="container">
-            <h1>Bodega Autovip</h1>
-            <br>
-            <div class="jumbotron">
-                <div class="row">
-                    <div class="col-md-2">
-                        <br>
-                        <br>
-                        <button onclick="agregarProducto()" class="btn btn-sm btn-primary btn-block">Agregar Producto</button>
-                        <button onclick="retirarProducto()" class="btn btn-sm btn-danger btn-block">Retirar Producto</button>
-                        <button onclick="infoProducto()" class="btn btn-sm btn-success btn-block">Listado de Productos</button>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="col-md-6">
-                        <div id="cuerpo"></div>
-                        <div id="mensajes"></div>
-                    </div>
-                </div>
-            </div>
+            <div id="inicio"></div>
+            <div id="mensajes"></div>
             <div id="addProductoModal" title="Agregar Producto"></div>
         </div>
     </body>

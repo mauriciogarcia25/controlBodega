@@ -8,23 +8,27 @@
         <th>Descripción</th>
         <th>Marca</th>
         <th>Modelo</th>
-        <th>precio</th>
-        <th>stock</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Responsable</th>
+        <th>Fecha</th>
         <?php $i = 0;
         foreach ($resultado as $fila): ?>
             <tr>
-                <td><?php echo $fila->codigo ?></td>
+                <td><?php echo $fila->id_producto ?></td>
                 <td><?php echo $fila->nombre ?></td>
                 <td><?php echo $fila->descripcion ?></td>
                 <td><?php echo $fila->marca ?></td>
                 <td><?php echo $fila->modelo ?></td>
                 <td><?php echo $fila->precio ?></td>
                 <td><?php echo $fila->stock ?></td>
+                <td><?php echo $fila->responsable ?></td>
+                <td><?php echo $fila->fecha ?></td>
                 <td>
-                    <button id='editar<?php echo $i ?>' onclick='editar(<?php echo $fila->codigo ?>)'>Editar</button>
+                    <button id='editar<?php echo $i ?>' onclick='editar(<?php echo $fila->id_producto ?>)'>Editar</button>
                 </td>
                 <td>
-                    <button id='eliminar<?php echo $i ?>' onclick='eliminar(<?php echo $fila->codigo ?>)'>Eliminar</button>
+                    <button id='eliminar<?php echo $i ?>' onclick='eliminar(<?php echo $fila->id_producto ?>)'>Eliminar</button>
                 </td>
             </tr>
         <?php $i++;

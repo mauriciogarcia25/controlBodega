@@ -13,6 +13,7 @@ class Controlador extends CI_Controller {
         $this->load->view('inicio');
     }
 
+//    validadores de usuarios---------------------------------
     function usuario() {
         $usuario = $this->input->post("usuario");
         $clave = md5($this->input->post("clave"));
@@ -31,7 +32,7 @@ class Controlador extends CI_Controller {
         $this->session->set_userdata($datos);
     }
 
-    function validaUser() {
+    function validarSesion() {
         if ($this->session->userdata("loggeado")) {
             $datos['usuario'] = $this->session->userdata("usuario");
             $this->load->view("contenido", $datos);
@@ -40,6 +41,11 @@ class Controlador extends CI_Controller {
         }
     }
 
+    function salir() {
+        $this->session->sess_destroy();
+    }
+
+//    cargadores de tablas------------------------------------
     function actualizaTabla() {
         $datos = $this->modelo->cargaProductos();
         $data['cantidad'] = $datos->num_rows();
@@ -52,6 +58,7 @@ class Controlador extends CI_Controller {
         $this->modelo->eliminarProducto($codigo);
     }
 
+//    agregar Productos---------------------------------------
     function agregarProducto() {
         $this->load->view("agregarProducto");
     }
@@ -66,6 +73,8 @@ class Controlador extends CI_Controller {
         $modelo = "";
         $precio = "";
         $stock = "";
+        $responsable = "";
+        $fecha = "";
 
         foreach ($respuesta as $fila):
             $nombre = $fila->nombre;
@@ -74,6 +83,8 @@ class Controlador extends CI_Controller {
             $modelo = $fila->modelo;
             $precio = $fila->precio;
             $stock = $fila->stock;
+            $responsable = $fila->responsable;
+            $fecha = $fila->fecha;
         endforeach;
         echo json_encode(array(
             "codigo" => $codigo,
@@ -82,7 +93,9 @@ class Controlador extends CI_Controller {
             "marca" => $marca,
             "modelo" => $modelo,
             "precio" => $precio,
-            "stock" => $stock
+            "stock" => $stock,
+            "responsable" => $responsable,
+            "fecha" => $fecha
         ));
     }
 
@@ -94,16 +107,17 @@ class Controlador extends CI_Controller {
         $modelo = $this->input->post("modelo");
         $precio = $this->input->post("precio");
         $stock = $this->input->post("stock");
+        $responsable = $this->session->userdata('nombre' + " " + 'apellido');
+        $fecha = $this->input->post("fecha");
 
-        $this->modelo->insertarProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock);
+        $this->modelo->insertarProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable, $fecha);
     }
 
     function retirarProducto() {
-        $this->load->view("retirarProducto");
-    }
-
-    function salir() {
-        $this->session->sess_destroy();
+        $datos = $this->modelo->cargaProductos();
+        $data['cantidad'] = $datos->num_rows();
+        $data['resultado'] = $datos->result();
+        $this->load->view("retirarProducto", $data);
     }
 
 }

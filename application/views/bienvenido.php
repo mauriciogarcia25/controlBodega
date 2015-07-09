@@ -1,1 +1,0 @@
-<p>Bienvenido Usuario : <?php echo $nombre?> <button type="submit" id="btnSalir" class="btn btn-success btn-sm">Salir</button></p>

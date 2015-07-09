@@ -1,6 +1,6 @@
 body {
     padding-top: 40px;
-    background: rgba(0,80,0,0.3);
+    background: rgba(30,80,50,0.4);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -11,7 +11,8 @@ body {
     padding: 15px;
     margin: 0 auto;
     background: #eee;
-    border-radius: 7%;
+    border-radius: 4%;
+    box-shadow: 5px 5px 5px #998;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {

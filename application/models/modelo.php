@@ -15,9 +15,27 @@ class Modelo extends CI_Model {
         }
     }
 
+    function rescataNombre($usuario, $clave) {
+        $this->db->select('nombre, apellido');
+        $this->db->where('usuario', $usuario);
+        $this->db->where('clave', $clave);
+        $respuesta = $this->db->get('usuarios');
+
+        foreach ($respuesta->result() as $fila) {
+            $nombre = $fila->nombre;
+            $apellido = $fila->apellido;
+        }
+        return $nombre . " " . $apellido;
+    }
+
     function cargaProductos() {
         $this->db->select("*");
         return $this->db->get("productos");
+    }
+
+    function cargaProductosRetirados() {
+        $this->db->select("*");
+        return $this->db->get("productos_retirados");
     }
 
     function eliminarProducto($codigo) {
@@ -31,7 +49,7 @@ class Modelo extends CI_Model {
         return $this->db->get("productos");
     }
 
-    function insertarProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable, $fecha) {
+    function addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable) {
         $this->db->select("id_producto");
         $this->db->where("id_producto", $codigo);
         $cant = $this->db->get("productos")->num_rows();
@@ -45,8 +63,7 @@ class Modelo extends CI_Model {
                 "modelo" => $modelo,
                 "precio" => $precio,
                 "stock" => $stock,
-                "responsable" => $responsable,
-                "fecha" => $fecha
+                "responsable" => $responsable
             );
             $this->db->insert("productos", $datos);
         } else {
@@ -57,8 +74,7 @@ class Modelo extends CI_Model {
                 "modelo" => $modelo,
                 "precio" => $precio,
                 "stock" => $stock,
-                "responsable" => $responsable,
-                "fecha" => $fecha
+                "responsable" => $responsable
             );
             $this->db->where("id_producto", $codigo);
             $this->db->update("productos", $datos);

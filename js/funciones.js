@@ -2,7 +2,7 @@ $(document).ready(
         function () {
             validarSesion();
             $("#addProductoModal").dialog({
-                modal: true, autoOpen: false, width: 460,
+                modal: true, autoOpen: false, width: 400,
                 buttons: {
                     "Guardar": function () {
                         $(this).dialog("close");
@@ -55,6 +55,13 @@ function actualizaTabla() {
                 designaBotones();
             });
 }
+function infoProductoRetirados(){
+    $.post(base_url + "controlador/infoProductoRetirados",{},
+        function (pagina, datos){
+            $("#cuerpo").html(pagina, datos);
+            designaBotonesR();
+        });
+}
 function designaBotones() {
     for (i = 0; i < parseInt($("#oculto").val()); i++) {
         $("#editar" + i).button({
@@ -77,6 +84,28 @@ function designaBotones() {
         });
     }
 }
+function designaBotonesR() {
+    for (i = 0; i < parseInt($("#ocultoR").val()); i++) {
+        $("#editarR" + i).button({
+            icons: {primary: "ui-icon-pencil"},
+            text: false
+        }).tooltip({
+            position: {
+                my: "left top",
+                at: "right+5 top-2"
+            }
+        });
+        $("#eliminarR" + i).button({
+            icons: {primary: "ui-icon-trash"},
+            text: false
+        }).tooltip({
+            position: {
+                my: "left top",
+                at: "right+5 top-2"
+            }
+        });
+    }
+}
 function eliminar(codigo) {
     $.post(base_url + "controlador/eliminarProducto", {codigo: codigo},
     function () {
@@ -86,7 +115,7 @@ function eliminar(codigo) {
     );
 }
 function editar(codigo) {
-    $.post(base_url + "controlador/agregarProducto", {},
+    $.post(base_url + "controlador/editarProducto", {},
             function (pagina, datos) {
                 $("#addProductoModal").html(pagina, datos);
                 validaCodigoProducto(codigo);

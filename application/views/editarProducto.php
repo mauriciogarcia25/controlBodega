@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <td>Stock</td>
-            <td>: <input id="addStock" placeholder="Ej: 3" /></td>
+            <td>: <input id="addStock" placeholder="Ej: 3" disabled="true"/></td>
         </tr>
         <tr>
             <td>responsable</td>

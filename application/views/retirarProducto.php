@@ -9,8 +9,9 @@
             <?php endforeach; ?>
         </select>
         <br>
-        <textarea class="text-info" title="Descripción Motivo" placeholder="Ingrese Motivo"></textarea>
+        <label>Motivo</label>
+        <input type="text" id="inMotivo" class="form-control" placeholder="Ej: Se retira para realizar cambio de alarma en vehiculo de 'juan perez'" required>
         <br>
-        <button class="btn btn-sm btn-warning">Retirar Producto</button>
+        <button class="btn btn-sm btn-warning" id="btnRetira">Retirar Producto</button>
     </form>
 <?php endif; ?>

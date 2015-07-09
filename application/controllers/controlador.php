@@ -19,13 +19,16 @@ class Controlador extends CI_Controller {
         $clave = md5($this->input->post("clave"));
 
         if ($this->modelo->usuario($usuario, $clave) == true) {
+            $nombre = $this->modelo->rescataNombre($usuario, $clave);
             $datos = array(
                 "usuario" => $usuario,
+                "nombre" => $nombre,
                 "loggeado" => true
             );
         } else {
             $datos = array(
                 "usuario" => "",
+                "nombre" => "",
                 "loggeado" => false
             );
         }
@@ -34,7 +37,7 @@ class Controlador extends CI_Controller {
 
     function validarSesion() {
         if ($this->session->userdata("loggeado")) {
-            $datos['usuario'] = $this->session->userdata("usuario");
+            $datos['nombre'] = $this->session->userdata("nombre");
             $this->load->view("contenido", $datos);
         } else {
             $this->load->view("login");
@@ -52,6 +55,13 @@ class Controlador extends CI_Controller {
         $data['resultado'] = $datos->result();
         $this->load->view("tablaProductos", $data);
     }
+    
+    function infoProductoRetirados(){
+        $datos = $this->modelo->cargaProductosRetirados();
+        $data['cantidad'] = $datos->num_rows();
+        $data['resultado'] = $datos->result();
+        $this->load->view("tablaProductosRetirados", $data);
+    }
 
     function eliminarProducto() {
         $codigo = $this->input->post("codigo");
@@ -61,6 +71,10 @@ class Controlador extends CI_Controller {
 //    agregar Productos---------------------------------------
     function agregarProducto() {
         $this->load->view("agregarProducto");
+    }
+    
+    function editarProducto(){
+        $this->load->view("editarProducto");
     }
 
     function validaCodigoProducto() {
@@ -107,10 +121,9 @@ class Controlador extends CI_Controller {
         $modelo = $this->input->post("modelo");
         $precio = $this->input->post("precio");
         $stock = $this->input->post("stock");
-        $responsable = $this->session->userdata('nombre' + " " + 'apellido');
-        $fecha = $this->input->post("fecha");
+        $responsable = $this->session->userdata('nombre');
 
-        $this->modelo->insertarProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable, $fecha);
+        $this->modelo->addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable);
     }
 
     function retirarProducto() {

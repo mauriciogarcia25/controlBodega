@@ -6,9 +6,11 @@ class Modelo extends CI_Model {
         $this->db->select('*');
         $this->db->where('usuario', $usuario);
         $this->db->where('clave', $clave);
-        $respuesta = $this->db->get('usuarios');
-
-        if ($respuesta->num_rows() == 0) {
+        $res = $this->db->get('usuarios');
+        foreach ($res->result() as $fila) {
+            $estado = $fila->estado;
+        }
+        if ($estado == 0) {
             return false;
         } else {
             return true;
@@ -16,16 +18,21 @@ class Modelo extends CI_Model {
     }
 
     function rescataNombre($usuario, $clave) {
-        $this->db->select('nombre, apellido');
+        $this->db->select('*');
         $this->db->where('usuario', $usuario);
         $this->db->where('clave', $clave);
-        $respuesta = $this->db->get('usuarios');
-
-        foreach ($respuesta->result() as $fila) {
-            $nombre = $fila->nombre;
-            $apellido = $fila->apellido;
+        $res = $this->db->get('usuarios');
+        
+        $data["nombre"]="";
+        $data["apeliido"]="";
+        $data["tipo"]="";
+        
+        foreach ($res->result() as $fila) {
+            $data["nombre"] = $fila->nombre;
+            $data["apellido"] = $fila->apellido;
+            $data["tipo"] = $fila->tipo;
         }
-        return $nombre . " " . $apellido;
+        return $data;
     }
 
     function cargaProductos() {
@@ -43,10 +50,21 @@ class Modelo extends CI_Model {
         $this->db->delete("productos");
     }
 
+    function eliminarPR($codigo){
+        $this->db->where("id_producto", $codigo);
+        $this->db->delete("productos_retirados");
+    }
+
     function cargaProductoCodigo($codigo) {
         $this->db->select("*");
         $this->db->where("id_producto", $codigo);
         return $this->db->get("productos");
+    }
+
+    function cargaUser($codigo) {
+        $this->db->select("*");
+        $this->db->where("id_usuario", $codigo);
+        return $this->db->get("usuarios");
     }
 
     function addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable) {
@@ -66,6 +84,7 @@ class Modelo extends CI_Model {
                 "responsable" => $responsable
             );
             $this->db->insert("productos", $datos);
+            return true;
         } else {
             $datos = array(
                 "nombre" => $nombre,
@@ -78,7 +97,94 @@ class Modelo extends CI_Model {
             );
             $this->db->where("id_producto", $codigo);
             $this->db->update("productos", $datos);
+            return true;
         }
+    }
+
+    function addUser($nombre, $apellido, $direccion, $tipo, $usuario, $clave) {
+        $this->db->select('*');
+        $this->db->where('usuario', $usuario);
+        $this->db->where('clave', $clave);
+        $res = $this->db->get('usuarios');
+
+        $estado = 1;
+
+        if ($res->num_rows() == 0) {
+            $datos = array(
+                "nombre" => $nombre,
+                "apellido" => $apellido,
+                "direccion" => $direccion,
+                "tipo" => $tipo,
+                "usuario" => $usuario,
+                "clave" => $clave,
+                "estado" => $estado
+            );
+            $this->db->insert("usuarios", $datos);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function ultimoUser() {
+        $this->db->select("*");
+        $res = $this->db->get('usuarios');
+
+        if ($res->num_rows() <= 1) {
+            $codigo = 1;
+            $estado = 1;
+            $datos = array(
+                "estado" => $estado
+            );
+            $this->db->where("id_usuario", $codigo);
+            $this->db->update("usuarios", $datos);
+        } else {
+            $codigo = 1;
+            $estado = 0;
+            $datos = array(
+                "estado" => $estado
+            );
+            $this->db->where("id_usuario", $codigo);
+            $this->db->update("usuarios", $datos);
+        }
+    }
+
+    function eliminarUser($codigo) {
+        $this->db->select("*");
+        $res = $this->db->get('usuarios');
+
+        if ($res->num_rows() <= 1) {
+            return FALSE;
+        } else {
+            if($codigo == 1){
+                return FALSE;
+            }else{
+                $this->db->where("id_usuario", $codigo);
+            $this->db->delete("usuarios");
+            return TRUE;
+            }
+        }
+    }
+
+    function retirar($nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable) {
+        $datos = array(
+            "nombre" => $nombre,
+            "descripcion" => $descripcion,
+            "marca" => $marca,
+            "modelo" => $modelo,
+            "precio" => $precio,
+            "motivo" => $motivo,
+            "responsable" => $responsable
+        );
+        $this->db->insert('productos_retirados', $datos);
+    }
+
+    function listaUsuarios() {
+//select * from `usuarios` where estado != 0
+        $this->db->select("*");
+        $this->db->from('usuarios');
+        $this->db->where('estado != 0');
+        return $this->db->get();
     }
 
 }

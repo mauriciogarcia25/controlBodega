@@ -9,7 +9,7 @@
         <th>Marca</th>
         <th>Modelo</th>
         <th>Precio</th>
-        <td>motivo</td>
+        <th>motivo</th>
         <th>Responsable</th>
         <th>Fecha</th>
         <?php $i = 0;
@@ -25,7 +25,7 @@
                 <td><?php echo $fila->responsable ?></td>
                 <td><?php echo $fila->fecha ?></td>
                 <td>
-                    <button id='eliminarR<?php echo $i ?>' onclick='eliminar(<?php echo $fila->id_producto ?>)'>Eliminar</button>
+                    <button id='eliminar<?php echo $i ?>' onclick='eliminarPR(<?php echo $fila->id_producto ?>)' class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 </td>
             </tr>
         <?php $i++;

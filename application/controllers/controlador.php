@@ -13,32 +13,41 @@ class Controlador extends CI_Controller {
         $this->load->view('inicio');
     }
 
-//    validadores de usuarios---------------------------------
     function usuario() {
         $usuario = $this->input->post("usuario");
         $clave = md5($this->input->post("clave"));
 
         if ($this->modelo->usuario($usuario, $clave) == true) {
-            $nombre = $this->modelo->rescataNombre($usuario, $clave);
+            $data = $this->modelo->rescataNombre($usuario, $clave);
             $datos = array(
                 "usuario" => $usuario,
-                "nombre" => $nombre,
+                "nombre" => $data['nombre'],
+                "apellido" => $data['apellido'],
+                "tipo" => $data['tipo'],
                 "loggeado" => true
             );
+            $msj = "A ingresado con exito, ahora se cargará su pagina";
         } else {
             $datos = array(
                 "usuario" => "",
                 "nombre" => "",
+                "apellido" => "",
+                "tipo" => "",
                 "loggeado" => false
             );
+            $msj = "Usuario no encontrado";
         }
+        echo json_encode($msj);
         $this->session->set_userdata($datos);
     }
 
     function validarSesion() {
         if ($this->session->userdata("loggeado")) {
-            $datos['nombre'] = $this->session->userdata("nombre");
-            $this->load->view("contenido", $datos);
+            if($this->session->userdata("tipo") == 1){
+                $this->load->view("contenidoAdmin");
+            }else{
+                $this->load->view("contenidoAsis");
+            }
         } else {
             $this->load->view("login");
         }
@@ -48,15 +57,14 @@ class Controlador extends CI_Controller {
         $this->session->sess_destroy();
     }
 
-//    cargadores de tablas------------------------------------
     function actualizaTabla() {
         $datos = $this->modelo->cargaProductos();
         $data['cantidad'] = $datos->num_rows();
         $data['resultado'] = $datos->result();
         $this->load->view("tablaProductos", $data);
     }
-    
-    function infoProductoRetirados(){
+
+    function infoProductoRetirados() {
         $datos = $this->modelo->cargaProductosRetirados();
         $data['cantidad'] = $datos->num_rows();
         $data['resultado'] = $datos->result();
@@ -66,15 +74,6 @@ class Controlador extends CI_Controller {
     function eliminarProducto() {
         $codigo = $this->input->post("codigo");
         $this->modelo->eliminarProducto($codigo);
-    }
-
-//    agregar Productos---------------------------------------
-    function agregarProducto() {
-        $this->load->view("agregarProducto");
-    }
-    
-    function editarProducto(){
-        $this->load->view("editarProducto");
     }
 
     function validaCodigoProducto() {
@@ -113,6 +112,31 @@ class Controlador extends CI_Controller {
         ));
     }
 
+    function editarUser() {
+        $codigo = $this->input->post("codigo");
+        $respuesta = $this->modelo->cargaUser($codigo)->result();
+
+        $nombre = "";
+        $apellido = "";
+        $direccion = "";
+        $usuario = "";
+        $clave = "";
+        foreach ($respuesta as $fila):
+            $nombre = $fila->nombre;
+            $apellido = $fila->apellido;
+            $direccion = $fila->direccion;
+            $usuario = $fila->usuario;
+            $clave = $fila->clave;
+        endforeach;
+        echo json_encode(array(
+            "nombre" => $nombre,
+            "apellido" => $apellido,
+            "direccion" => $direccion,
+            "usuario" => $usuario,
+            "clave" => $clave
+        ));
+    }
+
     function addProducto() {
         $codigo = $this->input->post("codigo");
         $nombre = $this->input->post("nombre");
@@ -122,8 +146,70 @@ class Controlador extends CI_Controller {
         $precio = $this->input->post("precio");
         $stock = $this->input->post("stock");
         $responsable = $this->session->userdata('nombre');
+        if ($this->modelo->addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable) == true) {
+            $msj = "Producto Almacenado Correctamente";
+        } else {
+            $msj = "Se Produjo un Error, intentelo nuevamente";
+        }
+        echo json_encode($msj);
+    }
 
-        $this->modelo->addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable);
+    function addUser() {
+        $nombre = $this->input->post("nombre");
+        $apellido = $this->input->post("apellido");
+        $direccion = $this->input->post("direccion");
+        $tipo = $this->input->post("tipo");
+        $usuario = $this->input->post("usuario");
+        $clave = md5($this->input->post("clave"));
+        if ($this->modelo->addUser($nombre, $apellido, $direccion, $tipo, $usuario, $clave) == true) {
+            $this->modelo->ultimoUser();
+            $msj = "Usuario Almacenado";
+        } else {
+            $msj = "el usuario ya existe";
+        }
+        echo json_encode($msj);
+    }
+
+    function eliminarUser() {
+        $codigo = $this->input->post("codigo");
+        if($this->modelo->eliminarUser($codigo) == false){
+            $msj="no es posible eliminar este usuario";
+        }else{
+            $this->modelo->ultimoUser();
+        }
+        echo json_decode($msj);
+    }
+
+    function retirar() {
+        $codigo = $this->input->post("codigo");
+        $motivo = $this->input->post("motivo");
+        $responsable = $this->session->userdata('nombre');
+        $respuesta = $this->modelo->cargaProductoCodigo($codigo)->result();
+
+        $nombre = "";
+        $descripcion = "";
+        $marca = "";
+        $modelo = "";
+        $precio = "";
+
+        foreach ($respuesta as $fila):
+            $nombre = $fila->nombre;
+            $descripcion = $fila->descripcion;
+            $marca = $fila->marca;
+            $modelo = $fila->modelo;
+            $precio = $fila->precio;
+        endforeach;
+
+        $this->modelo->retirar($nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable);
+
+        echo json_encode($msj);
+    }
+
+    function listarUsuarios() {
+        $datos = $this->modelo->listaUsuarios();
+        $data['cantidad'] = $datos->num_rows();
+        $data['resultado'] = $datos->result();
+        $this->load->view("listaUsuarios", $data);
     }
 
     function retirarProducto() {
@@ -132,5 +218,17 @@ class Controlador extends CI_Controller {
         $data['resultado'] = $datos->result();
         $this->load->view("retirarProducto", $data);
     }
+
+    function estadoUsuario() {
+        if ($this->session->userdata("loggeado")) {
+            $this->load->view("estadoUsuario");
+        }
+    }
+
+    function eliminarPR(){
+        $codigo = $this->input->post(codigo);
+        $this->modelo->eliminarPR($codigo);
+    }
+
 
 }

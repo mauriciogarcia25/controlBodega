@@ -1,28 +1,17 @@
 $(document).ready(
         function () {
             validarSesion();
-            $("#addProductoModal").dialog({
-                modal: true, autoOpen: false, width: 400,
-                buttons: {
-                    "Guardar": function () {
-                        $(this).dialog("close");
-                        if (parseInt($("#addPrecio").val()) <= 0 || parseInt($("#addStock").val()) <= 0) {
-                            mensajes("Precio o Stock no validos <br> Producto no almacenado!", "Error");
-                        } else {
-                            addProducto();
-                        }
-                    }
-                }
-            });
+            estadoUsuario();
         });
-//loggeo de usuarios--------------------------------
 function usuario() {
     $.post(base_url + "controlador/usuario", {
         usuario: $("#inUsuario").val(),
         clave: $("#inClave").val()},
-    function () {
+    function (datos) {
+        mensajes(datos);
         validarSesion();
-    });
+    }, 'json'
+            );
 }
 function validarSesion() {
     $.post(base_url + "controlador/validarSesion", {},
@@ -32,10 +21,6 @@ function validarSesion() {
                         function () {
                             usuario();
                         });
-                $("#btnSalir").click(
-                        function () {
-                            salir();
-                        });
             });
 }
 function salir() {
@@ -44,7 +29,6 @@ function salir() {
                 validarSesion();
             });
 }
-//tablas productos existentes-----------------------
 function infoProducto() {
     actualizaTabla();
 }
@@ -52,95 +36,26 @@ function actualizaTabla() {
     $.post(base_url + "controlador/actualizaTabla", {},
             function (pagina, datos) {
                 $("#cuerpo").html(pagina, datos);
-                designaBotones();
             });
 }
-function infoProductoRetirados(){
-    $.post(base_url + "controlador/infoProductoRetirados",{},
-        function (pagina, datos){
-            $("#cuerpo").html(pagina, datos);
-            designaBotonesR();
-        });
-}
-function designaBotones() {
-    for (i = 0; i < parseInt($("#oculto").val()); i++) {
-        $("#editar" + i).button({
-            icons: {primary: "ui-icon-pencil"},
-            text: false
-        }).tooltip({
-            position: {
-                my: "left top",
-                at: "right+5 top-2"
-            }
-        });
-        $("#eliminar" + i).button({
-            icons: {primary: "ui-icon-trash"},
-            text: false
-        }).tooltip({
-            position: {
-                my: "left top",
-                at: "right+5 top-2"
-            }
-        });
-    }
-}
-function designaBotonesR() {
-    for (i = 0; i < parseInt($("#ocultoR").val()); i++) {
-        $("#editarR" + i).button({
-            icons: {primary: "ui-icon-pencil"},
-            text: false
-        }).tooltip({
-            position: {
-                my: "left top",
-                at: "right+5 top-2"
-            }
-        });
-        $("#eliminarR" + i).button({
-            icons: {primary: "ui-icon-trash"},
-            text: false
-        }).tooltip({
-            position: {
-                my: "left top",
-                at: "right+5 top-2"
-            }
-        });
-    }
+function infoProductoRetirados() {
+    $.post(base_url + "controlador/infoProductoRetirados", {},
+            function (pagina, datos) {
+                $("#cuerpo").html(pagina, datos);
+            });
 }
 function eliminar(codigo) {
     $.post(base_url + "controlador/eliminarProducto", {codigo: codigo},
     function () {
-        mensajes("Articulo Eliminado Correctamente", "Error");
+        alert("Articulo Eliminado Correctamente");
         actualizaTabla();
-    }
-    );
+    }, 'json'
+            );
 }
 function editar(codigo) {
-    $.post(base_url + "controlador/editarProducto", {},
-            function (pagina, datos) {
-                $("#addProductoModal").html(pagina, datos);
-                validaCodigoProducto(codigo);
-                $("#addProductoModal").dialog({title: "Editar Producto"});
-                $("#addProductoModal").dialog("open");
-            }
-    );
+    validaCodigoEd(codigo);
 }
-//mensajes------------------------------------------
-function mensajes(msj, tipo) {
-    $("#mensajes").hide();
-    $("#mensajes").html("<p class='msj" + tipo + "'>" + msj + "</p>");
-    $("#mensajes").fadeIn(200).delay(700).fadeOut(2000);
-}
-//Agregar Productos---------------------------------
-function agregarProducto() {
-    $.post(base_url + "controlador/agregarProducto", {},
-            function (pagina, datos) {
-                $("#addProductoModal").html(pagina, datos);
-                $("#addProductoModal").dialog({title: "Agregar Producto"});
-                $("#addProductoModal").dialog("open");
-            }
-    );
-}
-function addProducto() {
+function addProductoAgregar() {
     $.post(base_url + "controlador/addProducto", {
         codigo: $("#addCodigo").val(),
         nombre: $("#addNombre").val(),
@@ -150,12 +65,27 @@ function addProducto() {
         precio: $("#addPrecio").val(),
         stock: $("#addStock").val()
     }, function () {
-        mensajes("Operación Realizada con Exito", "Ok");
+        alert("Operación Realizada con Exito");
         actualizaTabla();
-    }
-    );
+    }, 'json'
+            );
 }
-function validaCodigoProducto(codigo) {
+function addProductoEditar() {
+    $.post(base_url + "controlador/addProducto", {
+        codigo: $("#edCodigo").val(),
+        nombre: $("#edNombre").val(),
+        descripcion: $("#edDescripcion").val(),
+        marca: $("#edMarca").val(),
+        modelo: $("#edModelo").val(),
+        precio: $("#edPrecio").val(),
+        stock: $("#edStock").val()
+    }, function () {
+        alert("Operación Realizada con Exito", "Ok");
+        actualizaTabla();
+    }, 'json'
+            );
+}
+function validaCodigoAdd(codigo) {
     $.post(base_url + "controlador/validaCodigoProducto", {codigo: codigo},
     function (datos) {
         $("#addCodigo").val(datos.codigo);
@@ -170,10 +100,86 @@ function validaCodigoProducto(codigo) {
     }, 'json'
             );
 }
-//retirar productos
+function validaCodigoEd(codigo) {
+    $.post(base_url + "controlador/validaCodigoProducto", {codigo: codigo},
+    function (datos) {
+        $("#edCodigo").val(datos.codigo);
+        $("#edNombre").val(datos.nombre);
+        $("#edDescripcion").val(datos.descripcion);
+        $("#edMarca").val(datos.marca);
+        $("#edModelo").val(datos.modelo);
+        $("#edPrecio").val(datos.precio);
+        $("#edStock").val(datos.stock);
+        $("#edResponsable").val(datos.responsable);
+        $("#edFecha").val(datos.fecha);
+    }, 'json'
+            );
+}
 function retirarProducto() {
     $.post(base_url + "controlador/retirarProducto", {},
+            function (datos) {
+                $("#retiro").html(datos);
+            });
+}
+function estadoUsuario() {
+    $.post(base_url + "controlador/estadoUsuario", {},
+            function (pagina) {
+                $("#forma").html(pagina);
+                $("#btnSalir").click(
+                        function () {
+                            salir();
+                        });
+            }
+    );
+}
+function addUser() {
+    $.post(base_url + "controlador/addUser", {
+        nombre: $("#inNombreUser").val(),
+        apellido: $("#inApellidoUser").val(),
+        direccion: $("#inDirecUser").val(),
+        tipo: $("#inTipo").val(),
+        usuario: $("#nikUser").val(),
+        clave: $("#nClaveUser").val()
+    }, function () {
+        validarSesion();
+    }, 'json'
+            );
+}
+function editarUser(codigo) {
+    $.post(base_url + "controlador/editarUser", {codigo: codigo},
+    function (datos) {
+        $("#inNombreUser").val(datos.nombre);
+        $("#inApellidoUser").val(datos.apellido);
+        $("#inDirecUser").val(datos.direccion);
+        $("#nikUser").val(datos.usuario);
+        $("#nClaveUser").val(datos.clave);
+    }, 'json');
+}
+function eliminarUser(codigo) {
+    $.post(base_url + "controlador/eliminarUser", {codigo: codigo},
+    function () {
+        listarUsuarios();
+
+    }, 'json'
+    );
+}
+function listarUsuarios() {
+    $.post(base_url + "controlador/listarUsuarios", {},
             function (pagina, datos) {
                 $("#cuerpo").html(pagina, datos);
             });
+}
+function retirar() {
+    $.post(base_url + "controlador/retirar", {
+        codigo: $("#inProducto").val(),
+        motivo: $("#inMotivo").val()
+    }, function () {
+        infoProductoRetirados();
+    });
+}
+function eliminarPR(codigo){
+    $.post(base_url + "controlador/eliminarPR",{codigo: codigo},
+        function(){
+            infoProductoRetirados();
+        });
 }

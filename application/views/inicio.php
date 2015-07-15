@@ -4,35 +4,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Bienvenido a Bodega Autovip</title>
+        <title>Autovip</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>jquery/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/estilos.css">
         <script type="text/javascript" src="<?php echo base_url() ?>jquery/jquery.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>jquery/jquery-ui.js"></script>
         <script type="text/javascript" src="<?php echo base_url() ?>js/funciones.js"></script>
+        <script type="text/javascript" src="<?php echo base_url() ?>js/bootstrap.min.js"></script>
         <script type="text/javascript">var base_url = '<?php echo base_url() ?>index.php/';</script>
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" 
                             data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     </button>
-                    <a class="navbar-brand" href="#">Control Bodega Autovip</a>
+                    <a class="navbar-brand" href="<?php echo base_url() ?>">Autovip</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo base_url() ?>">inicio</a></li>
+                        <li class="active">
+                            <a href="<?php echo base_url() ?>">
+                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            </a>
+                        </li>
                     </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-        <div class="container">
-            <div id="inicio"></div>
-            <div id="mensajes"></div>
-            <div id="addProductoModal" title="Agregar Producto"></div>
+                    <ul>
+                        <form class="navbar-form navbar-right" id="forma"></form>
+                    </ul>
+                </div>
+            </div><!--/.nav-collapse -->
         </div>
-    </body>
+    </nav>
+    <div class="container">
+        <div id="inicio"></div>
+        <div id="mensajes"></div>
+        <div id="addProductoModal" title="Agregar Producto"></div>
+    </div>
+</body>
 </html>

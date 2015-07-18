@@ -1,7 +1,8 @@
 <?php if ($cantidad == 0): ?>
     <p>No Hay Productos almacenados!</p>
 <?php else: ?>
-    <h3>Tabla de Productos</h3>
+    <h3>Lista de Usuarios</h3>
+    <div class="table-responsive">
     <table class="table" id="tablaProductos">
         <th>Nombre</th>
         <th>Apellido</th>
@@ -19,15 +20,6 @@
                 <td><?php echo $fila->tipo ?></td>
                 <td><?php echo $fila->usuario ?></td>
                 <td>
-                    <button id='editar<?php echo $i ?>' 
-                            onclick='editarUser(<?php echo $fila->id_usuario ?>)' 
-                            class="btn btn-sm btn-default" 
-                            data-toggle="modal" 
-                            data-target="#editarUser">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                        </span> Editar</button>
-                </td>
-                <td>
                     <button id='eliminar<?php echo $i ?>' 
                             onclick='eliminarUser(<?php echo $fila->id_usuario ?>)' 
                             class="btn btn-sm btn-default">
@@ -40,6 +32,7 @@
         endforeach;
         ?>
     </table>
+</div>
 <?php endif; ?>
 <input type="hidden" id='oculto' value='<?php echo $i ?>'/>
 

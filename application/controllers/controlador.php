@@ -43,9 +43,11 @@ class Controlador extends CI_Controller {
 
     function validarSesion() {
         if ($this->session->userdata("loggeado")) {
-            if($this->session->userdata("tipo") == 1){
+            if ($this->session->userdata("tipo") == 0) {
+                $this->load->view("contenidoRoot");
+            } elseif($this->session->userdata("tipo") == 1) {
                 $this->load->view("contenidoAdmin");
-            }else{
+            }elseif($this->session->userdata("tipo") == 2){
                 $this->load->view("contenidoAsis");
             }
         } else {
@@ -146,12 +148,18 @@ class Controlador extends CI_Controller {
         $precio = $this->input->post("precio");
         $stock = $this->input->post("stock");
         $responsable = $this->session->userdata('nombre');
-        if ($this->modelo->addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable) == true) {
-            $msj = "Producto Almacenado Correctamente";
+
+        if (empty($codigo) || empty($nombre) || empty($descripcion) || empty($marca) || empty($modelo) || empty($stock) || empty($precio)) {
+            $msj = "alguno de los campos se encuentra vacios, debe completarlos para completar la acción";
         } else {
-            $msj = "Se Produjo un Error, intentelo nuevamente";
+            $st = $stock + $stockdb;
+            if ($this->modelo->addProducto($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $stock, $responsable) == true) {
+                $msj = "Producto Almacenado Correctamente";
+            } else {
+                $msj = "Se Produjo un Error, intentelo nuevamente";
+            }
         }
-        echo json_encode($msj);
+        echo json_encode(array("mensaje" => $msj));
     }
 
     function addUser() {
@@ -161,48 +169,57 @@ class Controlador extends CI_Controller {
         $tipo = $this->input->post("tipo");
         $usuario = $this->input->post("usuario");
         $clave = md5($this->input->post("clave"));
-        if ($this->modelo->addUser($nombre, $apellido, $direccion, $tipo, $usuario, $clave) == true) {
-            $this->modelo->ultimoUser();
-            $msj = "Usuario Almacenado";
+        if (empty($nombre) || empty($apellido) || empty($direccion) || empty($usuario) || empty($clave)) {
+            $msj = "alguno de los campos se encuentran vacios, debe completarlos";
         } else {
-            $msj = "el usuario ya existe";
+            if ($this->modelo->addUser($nombre, $apellido, $direccion, $tipo, $usuario, $clave) == true) {
+                $this->modelo->ultimoUser();
+                $msj = "Usuario Almacenado";
+            } else {
+                $msj = "el usuario ya existe";
+            }
         }
-        echo json_encode($msj);
+        echo json_encode(array("mensaje" => $msj));
     }
 
     function eliminarUser() {
         $codigo = $this->input->post("codigo");
-        if($this->modelo->eliminarUser($codigo) == false){
-            $msj="no es posible eliminar este usuario";
-        }else{
+        if ($this->modelo->eliminarUser($codigo) == false) {
+            $msj = "no es posible eliminar este usuario";
+        } else {
+            $msj = "usuario eliminado";
             $this->modelo->ultimoUser();
         }
-        echo json_decode($msj);
+        echo json_encode(array("mensaje" => $msj));
     }
 
     function retirar() {
         $codigo = $this->input->post("codigo");
+        $cantidad = $this->input->post("cantidad");
         $motivo = $this->input->post("motivo");
         $responsable = $this->session->userdata('nombre');
-        $respuesta = $this->modelo->cargaProductoCodigo($codigo)->result();
+        if (empty($motivo) || empty($codigo) || empty($cantidad)) {
+            $msj = "Contiene Alguno de los campos vacios, debe completarlos para continuar con la acción";
+        } else {
+            $respuesta = $this->modelo->cargaProductoCodigo($codigo)->result();
 
-        $nombre = "";
-        $descripcion = "";
-        $marca = "";
-        $modelo = "";
-        $precio = "";
+            $nombre = "";
+            $descripcion = "";
+            $marca = "";
+            $modelo = "";
+            $precio = "";
 
-        foreach ($respuesta as $fila):
-            $nombre = $fila->nombre;
-            $descripcion = $fila->descripcion;
-            $marca = $fila->marca;
-            $modelo = $fila->modelo;
-            $precio = $fila->precio;
-        endforeach;
-
-        $this->modelo->retirar($nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable);
-
-        echo json_encode($msj);
+            foreach ($respuesta as $fila):
+                $nombre = $fila->nombre;
+                $descripcion = $fila->descripcion;
+                $marca = $fila->marca;
+                $modelo = $fila->modelo;
+                $precio = $fila->precio;
+            endforeach;
+            $this->modelo->retirar($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable);
+            $msj = "Producto retirado con exito";
+        }
+        echo json_encode(array("mensaje" => $msj));
     }
 
     function listarUsuarios() {
@@ -225,10 +242,11 @@ class Controlador extends CI_Controller {
         }
     }
 
-    function eliminarPR(){
+    function eliminarPR() {
         $codigo = $this->input->post(codigo);
         $this->modelo->eliminarPR($codigo);
     }
 
-
 }
+
+?>

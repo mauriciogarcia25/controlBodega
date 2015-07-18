@@ -1,9 +1,9 @@
 <?php if ($cantidad == 0): ?>
     <p>No Hay Productos almacenados!</p>
 <?php else: ?>
-    <h3>Tabla de Productos</h3>
+    <h3>Productos retirados</h3>
+    <div class="table-responsive">
     <table class="table" id="tablaProductos">
-        <th>Código</th>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Marca</th>
@@ -15,7 +15,6 @@
         <?php $i = 0;
         foreach ($resultado as $fila): ?>
             <tr>
-                <td><?php echo $fila->id_producto ?></td>
                 <td><?php echo $fila->nombre ?></td>
                 <td><?php echo $fila->descripcion ?></td>
                 <td><?php echo $fila->marca ?></td>
@@ -31,5 +30,6 @@
         <?php $i++;
     endforeach; ?>
     </table>
+    <div>
 <?php endif; ?>
 <input type="hidden" id='ocultoR' value='<?php echo $i ?>'/>

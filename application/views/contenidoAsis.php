@@ -42,19 +42,19 @@
             <div class="modal-body">
                 <form class="form-signin">
                     <label>Código</label>
-                    <input  id="addCodigo" class="form-control" onblur="validaCodigoAdd(this.value)" placeholder="Ej: 2345-4"  autofocus/>
+                    <input  id="addCodigo" class="form-control" onblur="validaCodigoAdd(this.value)" placeholder="Ej: 2345-4"  autofocus maxlength="20" required/>
                     <label>Nombre</label>
-                    <input id="addNombre" class="form-control" placeholder="Ej: Alarma" required/>
+                    <input id="addNombre" class="form-control" placeholder="Ej: Alarma" maxlength="20" required/>
                     <label>Descripción</label>
-                    <input id="addDescripcion" class="form-control" placeholder="Ej: Kit Alarma"/>
+                    <input id="addDescripcion" class="form-control" placeholder="Ej: Kit Alarma" maxlength="20" required/>
                     <label>Marca</label>
-                    <input id="addMarca" class="form-control" placeholder="Ej: AlarmKits"/>
+                    <input id="addMarca" class="form-control" placeholder="Ej: AlarmKits" maxlength="20" required/>
                     <label>Modelo</label>
-                    <input id="addModelo" class="form-control" placeholder="Ej: ESM-780"/>
+                    <input id="addModelo" class="form-control" placeholder="Ej: ESM-780" maxlength="20" required/>
                     <label>Precio</label>
-                    <input id="addPrecio" class="form-control" placeholder="Ej: 20500"/>
+                    <input id="addPrecio" class="form-control" placeholder="Ej: 20500" maxlength="20" required/>
                     <label>Cantidad</label>
-                    <input id="addStock" class="form-control" placeholder="Ej: 3" />
+                    <input id="addStock" class="form-control" placeholder="Ej: 3" maxlength="20" required/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -76,11 +76,11 @@
                     <div class="col-md-4">
                         <form class="form-signin">
                             <label>nombre</label>
-                            <input  id="inNombreUser" class="form-control" placeholder="Ej: Roberto" autofocus/>
+                            <input  id="inNombreUser" class="form-control" placeholder="Ej: Roberto" autofocus maxlength="20" required/>
                             <label>Apellido</label>
-                            <input id="inApellidoUser" class="form-control" placeholder="Ej: Nahuel" />
+                            <input id="inApellidoUser" class="form-control" placeholder="Ej: Nahuel" maxlength="20" required/>
                             <label>Dirección</label>
-                            <input id="inDirecUser" class="form-control" placeholder="Ej: Pje 8 #230 SanClemente, Talca"/>
+                            <input id="inDirecUser" class="form-control" placeholder="Ej: Pje 8 #230 SanClemente, Talca" maxlength="20" required/>
                         </form>
                     </div>
                     <div class="col-md-4">
@@ -92,9 +92,9 @@
                             </select>
                             <br>
                             <label>Id del Usurio</label>
-                            <input id="nikUser" class="form-control" placeholder="Ej: RoNahuel"/>
+                            <input id="nikUser" class="form-control" placeholder="Ej: RoNahuel" maxlength="20" required/>
                             <label>Clave de Usuario</label>
-                            <input id="nClaveUser" class="form-control" type="password" placeholder="Ej: go.23.7"/>
+                            <input id="nClaveUser" class="form-control" type="password" placeholder="Ej: go.23.7" maxlength="20" required/>
                         </form>
                     </div>
                 </div>

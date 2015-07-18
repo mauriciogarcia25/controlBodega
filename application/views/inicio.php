@@ -22,15 +22,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <button type="button" class="navbar-toggle collapsed" 
                             data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     </button>
-                    <a class="navbar-brand" href="<?php echo base_url() ?>">Autovip</a>
+                    <a class="navbar-brand" href="<?php echo base_url() ?>"><img src="fonts/autovip.png" id="logo"></a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a href="<?php echo base_url() ?>">
-                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                            </a>
-                        </li>
                     </ul>
                     <ul>
                         <form class="navbar-form navbar-right" id="forma"></form>

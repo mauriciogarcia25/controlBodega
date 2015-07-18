@@ -22,11 +22,11 @@ class Modelo extends CI_Model {
         $this->db->where('usuario', $usuario);
         $this->db->where('clave', $clave);
         $res = $this->db->get('usuarios');
-        
-        $data["nombre"]="";
-        $data["apeliido"]="";
-        $data["tipo"]="";
-        
+
+        $data["nombre"] = "";
+        $data["apeliido"] = "";
+        $data["tipo"] = "";
+
         foreach ($res->result() as $fila) {
             $data["nombre"] = $fila->nombre;
             $data["apellido"] = $fila->apellido;
@@ -50,7 +50,7 @@ class Modelo extends CI_Model {
         $this->db->delete("productos");
     }
 
-    function eliminarPR($codigo){
+    function eliminarPR($codigo) {
         $this->db->where("id_producto", $codigo);
         $this->db->delete("productos_retirados");
     }
@@ -83,6 +83,7 @@ class Modelo extends CI_Model {
                 "stock" => $stock,
                 "responsable" => $responsable
             );
+
             $this->db->insert("productos", $datos);
             return true;
         } else {
@@ -95,10 +96,20 @@ class Modelo extends CI_Model {
                 "stock" => $stock,
                 "responsable" => $responsable
             );
+
             $this->db->where("id_producto", $codigo);
             $this->db->update("productos", $datos);
+
             return true;
         }
+    }
+
+    function sumarStock($codigo){
+        // select `stock` from `productos` where id_producto = 1
+            $this->db->select('stock');
+            $this->db->from('productos');
+            $this->db->where('id_producto', $codigo);
+            return $this->db->get();
     }
 
     function addUser($nombre, $apellido, $direccion, $tipo, $usuario, $clave) {
@@ -156,17 +167,23 @@ class Modelo extends CI_Model {
         if ($res->num_rows() <= 1) {
             return FALSE;
         } else {
-            if($codigo == 1){
+            if ($codigo == 1) {
                 return FALSE;
-            }else{
+            } else {
                 $this->db->where("id_usuario", $codigo);
-            $this->db->delete("usuarios");
-            return TRUE;
+                $this->db->delete("usuarios");
+                return TRUE;
             }
         }
     }
 
-    function retirar($nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable) {
+    function retirar($codigo, $nombre, $descripcion, $marca, $modelo, $precio, $motivo, $responsable) {
+        // select `stock` from `productos` where id_producto = 1
+        $this->db->select('stock');
+        $this->db->from('productos');
+        $this->db->where('id_producto', $codigo);
+        $stockdb = $this->db->get();
+
         $datos = array(
             "nombre" => $nombre,
             "descripcion" => $descripcion,
@@ -176,6 +193,13 @@ class Modelo extends CI_Model {
             "motivo" => $motivo,
             "responsable" => $responsable
         );
+        $st = $stockdb;
+        $st-= 1;
+        $data = array(
+            "stock" => $st
+        );
+        $this->db->where("id_producto", $codigo);
+        $this->db->update("productos", $data);
         $this->db->insert('productos_retirados', $datos);
     }
 

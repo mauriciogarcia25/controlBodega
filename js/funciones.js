@@ -3,6 +3,10 @@ $(document).ready(
             validarSesion();
             estadoUsuario();
         });
+function soloNumeros(e) {
+    var key = window.Event ? e.which : e.keyCode
+    return (key >= 48 && key <= 57)
+}
 function usuario() {
     $.post(base_url + "controlador/usuario", {
         usuario: $("#inUsuario").val(),
@@ -29,9 +33,6 @@ function salir() {
                 validarSesion();
             });
 }
-function infoProducto() {
-    actualizaTabla();
-}
 function actualizaTabla() {
     $.post(base_url + "controlador/actualizaTabla", {},
             function (pagina, datos) {
@@ -47,10 +48,8 @@ function infoProductoRetirados() {
 function eliminar(codigo) {
     $.post(base_url + "controlador/eliminarProducto", {codigo: codigo},
     function () {
-        alert("Articulo Eliminado Correctamente");
         actualizaTabla();
-    }, 'json'
-            );
+    });
 }
 function editar(codigo) {
     validaCodigoEd(codigo);
@@ -64,11 +63,10 @@ function addProductoAgregar() {
         modelo: $("#addModelo").val(),
         precio: $("#addPrecio").val(),
         stock: $("#addStock").val()
-    }, function () {
-        alert("Operación Realizada con Exito");
+    }, function (datos) {
         actualizaTabla();
-    }, 'json'
-            );
+        alert(datos.mensaje);
+    }, 'json');
 }
 function addProductoEditar() {
     $.post(base_url + "controlador/addProducto", {
@@ -79,11 +77,10 @@ function addProductoEditar() {
         modelo: $("#edModelo").val(),
         precio: $("#edPrecio").val(),
         stock: $("#edStock").val()
-    }, function () {
-        alert("Operación Realizada con Exito", "Ok");
+    }, function (datos) {
         actualizaTabla();
-    }, 'json'
-            );
+        alert(datos.mensaje);
+    }, 'json');
 }
 function validaCodigoAdd(codigo) {
     $.post(base_url + "controlador/validaCodigoProducto", {codigo: codigo},
@@ -97,6 +94,14 @@ function validaCodigoAdd(codigo) {
         $("#addStock").val(datos.stock);
         $("#addResponsable").val(datos.responsable);
         $("#addFecha").val(datos.fecha);
+    }, 'json'
+            );
+}
+function validaCodigoRetiro(codigo) {
+    $.post(base_url + "controlador/validaCodigoProducto", {codigo: codigo},
+    function (datos) {
+        $("#inCodigoProductoRetiro").val(datos.codigo);
+        $("#inNombreProductoRetiro").val(datos.nombre);
     }, 'json'
             );
 }
@@ -140,8 +145,9 @@ function addUser() {
         tipo: $("#inTipo").val(),
         usuario: $("#nikUser").val(),
         clave: $("#nClaveUser").val()
-    }, function () {
-        validarSesion();
+    }, function (datos) {
+        alert(datos.mensaje);
+        infoProductoRetirados();
     }, 'json'
             );
 }
@@ -153,15 +159,14 @@ function editarUser(codigo) {
         $("#inDirecUser").val(datos.direccion);
         $("#nikUser").val(datos.usuario);
         $("#nClaveUser").val(datos.clave);
-    }, 'json');
+    });
 }
 function eliminarUser(codigo) {
     $.post(base_url + "controlador/eliminarUser", {codigo: codigo},
-    function () {
+    function (datos) {
+        alert(datos.mensaje);
         listarUsuarios();
-
-    }, 'json'
-    );
+    }, 'json');
 }
 function listarUsuarios() {
     $.post(base_url + "controlador/listarUsuarios", {},
@@ -171,15 +176,17 @@ function listarUsuarios() {
 }
 function retirar() {
     $.post(base_url + "controlador/retirar", {
-        codigo: $("#inProducto").val(),
+        codigo: $("#inCodigoProductoRetiro").val(),
+        cantidad: $("#inCantRetiro").val(),
         motivo: $("#inMotivo").val()
-    }, function () {
+    }, function (datos) {
+        alert(datos.mensaje);
+        infoProductoRetirados();
+    }, 'json');
+}
+function eliminarPR(codigo) {
+    $.post(base_url + "controlador/eliminarPR", {codigo: codigo},
+    function () {
         infoProductoRetirados();
     });
-}
-function eliminarPR(codigo){
-    $.post(base_url + "controlador/eliminarPR",{codigo: codigo},
-        function(){
-            infoProductoRetirados();
-        });
 }

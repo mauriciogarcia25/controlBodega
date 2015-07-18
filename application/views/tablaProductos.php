@@ -1,8 +1,9 @@
 <?php if ($cantidad == 0): ?>
     <p>No Hay Productos almacenados!</p>
 <?php else: ?>
-    <h3>Tabla de Productos</h3>
-    <table class="table" id="tablaProductos">
+    <h3>Lista de Productos</h3>
+    <div class="table-responsive">
+    <table class="table" id="tablaProductos" >
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Marca</th>
@@ -36,6 +37,7 @@
         endforeach;
         ?>
     </table>
+    </div>
 <?php endif; ?>
 <input type="hidden" id='oculto' value='<?php echo $i ?>'/>
 
@@ -47,32 +49,31 @@
                 <h4 class="modal-title">Editar Productos</h4>
             </div>
             <div class="modal-body">
-                <form class="form-signin">
                     <div class="row">
                         <div class="col-md-4">
                             <label>Código</label>
-                            <input  id="edCodigo" class="form-control" onblur="validaCodigoEd(this.value)" placeholder="Ej: 2345-4" />
+                            <input  id="edCodigo" class="form-control" onblur="validaCodigoEd(this.value)" placeholder="Ej: 2345-4" maxlength="20" required/>
                             <label>Nombre</label>
-                            <input id="edNombre" class="form-control" placeholder="Ej: Alarma" autofocus/>
+                            <input id="edNombre" class="form-control" placeholder="Ej: Alarma" autofocus maxlength="20" required/>
                             <label>Descripción</label>
-                            <input id="edDescripcion" class="form-control" placeholder="Ej: Kit Alarma"/>
+                            <input id="edDescripcion" class="form-control" placeholder="Ej: Kit Alarma" maxlength="20" required/>
                             <label>Marca</label>
-                            <input id="edMarca" class="form-control" placeholder="Ej: AlarmKits"/>
+                            <input id="edMarca" class="form-control" placeholder="Ej: AlarmKits" maxlength="20" required/>
                             <label>Modelo</label>
-                            <input id="edModelo" class="form-control" placeholder="Ej: ESM-780"/> 
+                            <input id="edModelo" class="form-control" placeholder="Ej: ESM-780" maxlength="20" required/> 
                         </div>
                         <div class="col-md-4">
                             <label>Precio</label>
-                            <input id="edPrecio" class="form-control" placeholder="Ej: 20500"/>
+                            <input id="edPrecio" class="form-control" placeholder="Ej: 20500" maxlength="20" required/>
                             <label>Stock</label>
-                            <input id="edStock" class="form-control" placeholder="Ej: 3" />
+                            <input id="edStock" class="form-control" placeholder="Ej: 3" maxlength="20" required/>
                             <label>responsable</label>
-                            <input id="edResponsable" class="form-control" disabled="true" value="<?php echo $this->session->userdata('nombre') ?>"/>
+                            <input id="edResponsable" class="form-control" disabled="true" value="<?php echo $this->session->userdata('nombre') ?>" maxlength="20" required/>
                             <label>fecha</label>
-                            <input id="edFecha" class="form-control" disabled="true"/>
+                            <input id="edFecha" class="form-control" disabled="true" maxlength="20" required/>
                         </div>
                     </div>
-                </form>
+                    <div id="mEAgr"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="btnEditar" data-dismiss="modal" onclick="addProductoEditar()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Editar</button>
